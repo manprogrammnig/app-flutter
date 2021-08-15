@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:productos_app/models/models.dart';
 
 class ProductsService extends ChangeNotifier {
-  final String _baseUrl = 'flutter-proyecto-f2148-default-rtdb.firebaseio.com';
+  final String _baseUrl = 'flutter-varios-332f8-default-rtdb.firebaseio.com';
 
   final List<Product> products = [];
   bool isLoading = true;
@@ -14,6 +14,9 @@ class ProductsService extends ChangeNotifier {
     this.loadProducts();
   }
   Future loadProducts() async {
+    this.isLoading = true;
+    notifyListeners();
+
     final url = Uri.https(_baseUrl, 'products.json');
     final resp = await http.get(url);
 
@@ -24,7 +27,6 @@ class ProductsService extends ChangeNotifier {
       tempProduct.id = key;
       this.products.add(tempProduct);
     });
-
     print(this.products[0].name);
   }
 }

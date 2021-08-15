@@ -7,17 +7,15 @@ import 'dart:convert';
 class Product {
   Product({
     required this.available,
-    required this.productName,
+    required this.name,
     this.picture,
     required this.price,
-    required this.name,
   });
 
   bool available;
-  String productName;
+  String name;
   String? picture;
   double price;
-  String name;
   String? id;
 
   factory Product.fromJson(String str) => Product.fromMap(json.decode(str));
@@ -26,17 +24,15 @@ class Product {
 
   factory Product.fromMap(Map<String, dynamic> json) => Product(
         available: json["available"],
-        productName: json["name "] == null ? null : json["name "],
+        name: json["name"],
         picture: json["picture"],
         price: json["price"].toDouble(),
-        name: json["name"] == null ? null : json["name"],
       );
 
   Map<String, dynamic> toMap() => {
         "available": available,
-        "name ": productName == null ? null : productName,
+        "name": name,
         "picture": picture,
         "price": price,
-        "name": name == null ? null : name,
       };
 }
