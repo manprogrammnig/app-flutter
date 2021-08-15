@@ -13,7 +13,7 @@ class ProductsService extends ChangeNotifier {
   ProductsService() {
     this.loadProducts();
   }
-  Future loadProducts() async {
+  Future <List<Product>>loadProducts() async {
     this.isLoading = true;
     notifyListeners();
 
@@ -27,6 +27,9 @@ class ProductsService extends ChangeNotifier {
       tempProduct.id = key;
       this.products.add(tempProduct);
     });
-    print(this.products[0].name);
+
+   this.isLoading = false;
+    notifyListeners();
+    return this.products;
   }
 }
