@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,6 +10,8 @@ class ProductsService extends ChangeNotifier {
 
   final List<Product> products = [];
   late Product selectedProduct;
+  File? newPictureFile;
+
   bool isLoading = true;
   bool isSaving = false;
 
@@ -66,14 +69,18 @@ class ProductsService extends ChangeNotifier {
   Future<String> createProduct(Product product) async {
     final url = Uri.https(_baseUrl, 'products.json');
     final resp = await http.post(url, body: product.toJson());
-    final decodedData =json.decode(resp.body) ;
+    final decodedData = json.decode(resp.body);
 
     product.id = decodedData['name'];
 
     this.products.add(product);
 
     return product.id!;
+  }
 
-    
+  void updateSelectedProductImage(String path) {
+    this.selectedProduct.picture = path;
+    this.newPictureFile = File.fromUri(Uri(path: path));
+    notifyListeners();
   }
 }
