@@ -59,9 +59,9 @@ class _ProductScreenBody extends StatelessWidget {
                         print('No selecciono nada');
                         return;
                       }
-                      print('Tenemos imagen ${pickedFile.path}');
 
-                      productService.updateSelectedProductImage(pickedFile.path);
+                      productService
+                          .updateSelectedProductImage(pickedFile.path);
                     },
                     icon: Icon(Icons.camera_alt_outlined,
                         size: 40, color: Colors.white),
@@ -82,6 +82,11 @@ class _ProductScreenBody extends StatelessWidget {
         onPressed: () async {
           //todo Guardar producto
           if (!productForm.isValidForm()) return;
+
+          final String? imageUrl = await productService.uploadImage();
+
+          print(imageUrl);
+
           await productService.saveOrCreateProduct(productForm.product);
         },
       ),
