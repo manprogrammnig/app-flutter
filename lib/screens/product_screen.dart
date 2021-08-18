@@ -53,7 +53,9 @@ class _ProductScreenBody extends StatelessWidget {
                       //todo:camara o galeria
                       final picker = new ImagePicker();
                       final PickedFile? pickedFile = await picker.getImage(
-                          source: ImageSource.camera, imageQuality: 100);
+                          source: ImageSource.camera,
+                          //source: ImageSource.gallery,
+                          imageQuality: 100);
 
                       if (pickedFile == null) {
                         print('No selecciono nada');
@@ -78,14 +80,18 @@ class _ProductScreenBody extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.save_outlined),
-        onPressed: () async {
+        child: productService.isSaving
+        ? CircularProgressIndicator(color: Colors.white) 
+        :Icon(Icons.save_outlined),
+        onPressed:productService.isSaving
+        ? null
+        :() async {
           //todo Guardar producto
           if (!productForm.isValidForm()) return;
 
           final String? imageUrl = await productService.uploadImage();
 
-          print(imageUrl);
+          if (imageUrl != null) productForm.product.picture = imageUrl;
 
           await productService.saveOrCreateProduct(productForm.product);
         },
